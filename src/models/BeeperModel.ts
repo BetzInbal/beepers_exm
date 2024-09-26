@@ -1,6 +1,6 @@
 export class BeeperModel {
     public id: number
-    public status: string
+    public status: string //"detonated" | "assembled" | "shipped"| "deployed" | "manufactured"
     public created_at: Date
     public detonated_at?: Date
     public latitude?: number
@@ -13,11 +13,4 @@ export class BeeperModel {
         this.created_at = new Date()
     }
 
-}
-export enum beeperStatus {
-    manufactured,
-    assembled,
-    shipped,
-    deployed,
-    detonated
 }

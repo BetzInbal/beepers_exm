@@ -1,18 +1,19 @@
 import { getFileData, saveFileData } from "../config/fileDataLayer"
+import newBeeperDto from "../DTO/NewBeeperDto";
 import { BeeperModel  } from "../models/BeeperModel";
+import Utils from "../utils/utils";
 
 
 export default class BeeperService{
 
-    public static createBeeper = async (name : string) =>  {
+    public static createBeeper = async (nameDto : newBeeperDto) =>  {
         try {
             const beepers = await getFileData()
             if (!beepers){throw new Error("Unable to access DATA")}
-            const newBeeper:BeeperModel = new BeeperModel(name)
+            const newBeeper:BeeperModel = new BeeperModel(nameDto.name)
             beepers.push(newBeeper)
             await saveFileData(beepers)
-            return newBeeper;
-    
+            return newBeeper;  
         } catch (error) {
             return error
         }
@@ -59,17 +60,16 @@ export default class BeeperService{
 
     public static apdateStatusById = async (statusDto:StatusDto, id:number) =>  {
         
-            const beepers = await getFileData()
-            if (!beepers){throw new Error("Unable to access DATA")}
-            const specifBeeper = beepers.find(b => b.id === id)            
-            if (!specifBeeper){throw new Error("The biperDas not found")}
-            if (!BeeperService.isStatusvalid(statusDto.status, specifBeeper))
-                {throw new Error("The status apdate isn valid")}
-            statusDto.status === "deployed" && BeeperService.setdeployed(statusDto,specifBeeper)
-            console.log("service is up");
-            specifBeeper.status = statusDto.status
-            await saveFileData(beepers)        
-  
+        const beepers = await getFileData()
+        if (!beepers){throw new Error("Unable to access DATA")}
+        const specifBeeper = beepers.find(b => b.id === id)            
+        if (!specifBeeper){throw new Error("The biperDas not found")}
+        if (!Utils.isStatusvalid(statusDto.status, specifBeeper))
+            {throw new Error("The status apdate isn valid")}
+        statusDto.status === "deployed" && Utils.setdeployed(statusDto,specifBeeper)
+        specifBeeper.status = statusDto.status
+        await saveFileData(beepers)
+        return specifBeeper        
     }
 
     public static deleteBeeperById = async (id:number) =>{
@@ -80,42 +80,7 @@ export default class BeeperService{
     }
 
 
-    public static isStatusvalid = (status:string, beepr:BeeperModel) =>{
-        const listvalidStatus = ["assembled", "shipped", "deployed"]
-        return (listvalidStatus.includes(status) && beepr.status != "deployed" && beepr.status != "detonated")
-    }
-    public static setdeployed = (statusDto:StatusDto, beepr:BeeperModel) =>{
 
-        if(!BeeperService.isLocationValid(statusDto))
-            {throw new Error("Not valid location")
-        }
-        beepr.latitude = statusDto.latitude
-        beepr.longitude = statusDto.longitude
-        console.log(beepr);
-        
-        BeeperService.bombBeepr(beepr.id)
-    }
-    public static bombBeepr = async (id:number) =>{
-        console.log("BOOOOOOOOMMM started");
-        await setTimeout(async() => {
-            console.log("BOOOOOOOOMMM");          
-            const beepers = await getFileData()
-            console.log(beepers);
-            
-            if (!beepers){throw new Error("Unable to access DATAdddddddd")}
-            const specifBeeper = beepers.find(b => b.id === id)
-            if (!specifBeeper){throw new Error("The biperDas not found")}
-            specifBeeper.status = "detonated"
-            specifBeeper.detonated_at = new Date()
-            await saveFileData(beepers)
-        }, 10000);
-    }
-    public static isLocationValid = (statusDto:StatusDto) =>{
-
-        const lat = [35.78674, 34.59708, 3]
-        const long = [35.78674, 34.59708, 3]
-        return (lat.includes(statusDto.latitude!) && (long.includes(statusDto.longitude!)))
-    }
 
 
 

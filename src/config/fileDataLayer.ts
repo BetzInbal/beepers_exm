@@ -8,7 +8,6 @@ export const getFileData = async (): Promise<BeeperModel[] | void> => {
         return parsedData
 
     } catch (error) {
-        console.log(error);
 
     }
 }
