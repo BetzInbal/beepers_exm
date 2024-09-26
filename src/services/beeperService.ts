@@ -75,7 +75,6 @@ export default class BeeperService{
     public static deleteBeeperById = async (id:number) =>{
         const beepers = await getFileData()
         if (!beepers){throw new Error("Unable to access DATA")}
-            // למצוא דרך טובה ויפה יותר
         await saveFileData(beepers.filter(b => b.id != id))
     }
 
