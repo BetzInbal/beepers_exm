@@ -58,7 +58,6 @@ export default class BeeperService{
 
 
     public static apdateStatusById = async (statusDto:StatusDto, id:number) =>  {
-        console.log("insaiid shoo");
         
             const beepers = await getFileData()
             if (!beepers){throw new Error("Unable to access DATA")}
@@ -89,7 +88,6 @@ export default class BeeperService{
         if(!BeeperService.isLocationValid(statusDto))
             {throw new Error("Not valid location")
         }
-        console.log("insaiid insaiid shoo");
         beepr.latitude = statusDto.latitude
         beepr.longitude = statusDto.longitude
         console.log(beepr);
@@ -97,18 +95,22 @@ export default class BeeperService{
         BeeperService.bombBeepr(beepr.id)
     }
     public static bombBeepr = async (id:number) =>{
+        console.log("BOOOOOOOOMMM started");
         await setTimeout(() => {
             console.log("BOOOOOOOOMMM");          
         }, 10000);
         const beepers = await getFileData()
-        if (!beepers){throw new Error("Unable to access DATA")}
+        console.log(beepers);
+        
+        if (!beepers){throw new Error("Unable to access DATAdddddddd")}
         const specifBeeper = beepers.find(b => b.id === id)
         if (!specifBeeper){throw new Error("The biperDas not found")}
         specifBeeper.status = "detonated"
+        specifBeeper.detonated_at = new Date()
         await saveFileData(beepers)
     }
     public static isLocationValid = (statusDto:StatusDto) =>{
-        console.log("insaiid insaiid shoo");
+
         const lat = [35.78674, 34.59708, 3]
         const long = [35.78674, 34.59708, 3]
         return (lat.includes(statusDto.latitude!) && (long.includes(statusDto.longitude!)))

@@ -6,7 +6,7 @@ export class BeeperModel {
     public latitude?: number
     public longitude?: number
     constructor(
-        name: string,
+        public name: string,
     ) {
         this.id = +Math.random().toString().split(".")[1]
         this.status = "manufactured"// beeperStatus[0]
