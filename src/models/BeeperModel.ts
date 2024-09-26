@@ -4,12 +4,12 @@ export class BeeperModel {
     public created_at: Date
     public detonated_at?: Date
     public latitude?: number
-    public longitude?: string
+    public longitude?: number
     constructor(
         name: string,
     ) {
         this.id = +Math.random().toString().split(".")[1]
-        this.status = beeperStatus[0]
+        this.status = "manufactured"// beeperStatus[0]
         this.created_at = new Date()
     }
 

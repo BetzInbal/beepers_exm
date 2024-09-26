@@ -82,15 +82,16 @@ router.get(`/status/:status`, async (req:Request, res:Response):Promise<void> =>
     }
 })
 
-// עדכון סטוס של ביפר ספציפי לנקסט
+// עדכון סטוס של ביפר ספציפי 
 router.put(`/:id/status`, async (req:Request, res:Response):Promise<void> => {
-    try {
-        const id:number = +req.params.id
-        //const result = await beeperService.GetPostByContext(context)
+    try { console.log("first shoo");
+    
+        const id:number = + req.params.id
+        const result = await BeeperService.apdateStatusById(req.body, id)
         res.status(200).json({
             err: false,
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
@@ -105,11 +106,12 @@ router.put(`/:id/status`, async (req:Request, res:Response):Promise<void> => {
 // מחיקת ביפר ספציפי by id
 router.delete(`/:id`, async (req:Request, res:Response):Promise<void> => {
     try {
-        //const result = await beeperService.GetPostByContext(context)
+        const id:number = + req.params.id
+        const result = await BeeperService.deleteBeeperById(id)
         res.status(200).json({
             err: false,
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
