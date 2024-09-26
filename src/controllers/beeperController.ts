@@ -84,8 +84,7 @@ router.get(`/status/:status`, async (req:Request, res:Response):Promise<void> =>
 
 // עדכון סטוס של ביפר ספציפי 
 router.put(`/:id/status`, async (req:Request, res:Response):Promise<void> => {
-    try { console.log("first shoo");
-    
+
         const id:number = + req.params.id
         const result = await BeeperService.apdateStatusById(req.body, id)
         res.status(200).json({

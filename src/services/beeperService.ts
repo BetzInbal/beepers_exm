@@ -61,11 +61,12 @@ export default class BeeperService{
         
             const beepers = await getFileData()
             if (!beepers){throw new Error("Unable to access DATA")}
-            const specifBeeper = beepers.find(b => b.id === id)
+            const specifBeeper = beepers.find(b => b.id === id)            
             if (!specifBeeper){throw new Error("The biperDas not found")}
             if (!BeeperService.isStatusvalid(statusDto.status, specifBeeper))
                 {throw new Error("The status apdate isn valid")}
             statusDto.status === "deployed" && BeeperService.setdeployed(statusDto,specifBeeper)
+            console.log("service is up");
             specifBeeper.status = statusDto.status
             await saveFileData(beepers)        
   
@@ -96,18 +97,18 @@ export default class BeeperService{
     }
     public static bombBeepr = async (id:number) =>{
         console.log("BOOOOOOOOMMM started");
-        await setTimeout(() => {
+        await setTimeout(async() => {
             console.log("BOOOOOOOOMMM");          
+            const beepers = await getFileData()
+            console.log(beepers);
+            
+            if (!beepers){throw new Error("Unable to access DATAdddddddd")}
+            const specifBeeper = beepers.find(b => b.id === id)
+            if (!specifBeeper){throw new Error("The biperDas not found")}
+            specifBeeper.status = "detonated"
+            specifBeeper.detonated_at = new Date()
+            await saveFileData(beepers)
         }, 10000);
-        const beepers = await getFileData()
-        console.log(beepers);
-        
-        if (!beepers){throw new Error("Unable to access DATAdddddddd")}
-        const specifBeeper = beepers.find(b => b.id === id)
-        if (!specifBeeper){throw new Error("The biperDas not found")}
-        specifBeeper.status = "detonated"
-        specifBeeper.detonated_at = new Date()
-        await saveFileData(beepers)
     }
     public static isLocationValid = (statusDto:StatusDto) =>{
 
