@@ -1,24 +1,23 @@
-class BeeperModel{
-    public id:number
-    public status:string
-    public created_at:Date
-    public detonated_at?:Date
-    latitude?:number
-    longitude?:string
-    
+export class BeeperModel {
+    public id: number
+    public status: string
+    public created_at: Date
+    public detonated_at?: Date
+    public latitude?: number
+    public longitude?: string
     constructor(
-        name:string,
-    ){
+        name: string,
+    ) {
         this.id = +Math.random().toString().split(".")[1]
         this.status = beeperStatus[0]
         this.created_at = new Date()
     }
-    
+
 }
-enum beeperStatus  {
+export enum beeperStatus {
     manufactured,
     assembled,
     shipped,
     deployed,
-    detonated,
+    detonated
 }

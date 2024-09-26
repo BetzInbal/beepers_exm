@@ -1,17 +1,19 @@
 import exp, { Router,Request,Response } from 'express'
+import BeeperService from '../services/beeperService'
+import { BeeperModel } from '../models/BeeperModel'
 
 
 const router :Router = exp.Router()
 
 
 //יצירת ביפר
-router.post(`/status/:status`, async (req:Request, res:Response):Promise<void> => {
+router.post(`/`, async (req:Request, res:Response):Promise<void> => {
     try {
-        //const result = await beeperService.GetPostByContext(context)
+        const name = req.body.name
+        const result = await BeeperService.createBeeper(name)
         res.status(200).json({
-            err: false,
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
@@ -26,11 +28,10 @@ router.post(`/status/:status`, async (req:Request, res:Response):Promise<void> =
 //קבלת כל הביפרים
 router.get(`/`, async (req:Request, res:Response):Promise<void> => {
     try {
-        //const result = await beeperService.GetPostByContext(context)
+        const result = await BeeperService.getAllBeeper()
         res.status(200).json({
-            err: false,
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
@@ -45,11 +46,11 @@ router.get(`/`, async (req:Request, res:Response):Promise<void> => {
 //קבלת ביפר על פי id
 router.get(`/:id`, async (req:Request, res:Response):Promise<void> => {
     try {
-        //const result = await beeperService.GetPostByContext(context)
+        const id:number = +req.params.id
+        const result = await BeeperService.getBeeperbyId(id)
         res.status(200).json({
-            err: false,
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
@@ -64,11 +65,12 @@ router.get(`/:id`, async (req:Request, res:Response):Promise<void> => {
 //קבלת רשימת הביפרים שבסטטוס מסוים
 router.get(`/status/:status`, async (req:Request, res:Response):Promise<void> => {
     try {
-        //const result = await beeperService.GetPostByContext(context)
+        const status:string = req.params.status
+        const result = await BeeperService.getBeeperbyStatus(status)
         res.status(200).json({
-            err: false,
+
             message: (`I was way lazy to change the default `),
-            data:undefined
+            data:result
         })
 
     } catch (error) {
@@ -83,6 +85,7 @@ router.get(`/status/:status`, async (req:Request, res:Response):Promise<void> =>
 // עדכון סטוס של ביפר ספציפי לנקסט
 router.put(`/:id/status`, async (req:Request, res:Response):Promise<void> => {
     try {
+        const id:number = +req.params.id
         //const result = await beeperService.GetPostByContext(context)
         res.status(200).json({
             err: false,
